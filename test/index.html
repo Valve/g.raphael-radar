@@ -11,8 +11,8 @@
     <script type="text/javascript">
       function arm(cx, cy, r, angle){
         var rad = Raphael.rad(angle);
-        var x = r + (r * Math.cos(rad));
-        var y = r + (r * Math.sin(rad));
+        var x = cx + (r * Math.cos(rad));
+        var y = cy + (r * Math.sin(rad));
 
         return ["M", cx, cy, "L", x, y, "Z"].join(",");
       }
@@ -32,12 +32,27 @@
         return mesh.join(",");       
       }
 
+      function label(cx, cy, r, angle){
+        var rad = Raphael.rad(angle);
+        var x = cx + r * Math.cos(rad);
+        var y = cy + r * Math.sin(rad);
+        return {
+          x: (Math.round(x) === cx) ? x : (x < cx ? x - 10 : x + 10),
+          y: (Math.round(y) === cy) ? y : (y < cy ? y - 10 : y + 10),
+          attr:{
+            "text-anchor": (Math.round(x) === cx) ? "middle"  : (x < cx ?  "end" : "start"),
+            "font-size": r/20
+          }
+        };
+      }
+
       window.onload = function(){
-        var cx = 200, cy = 200, radius = 200, meshMinimumSize = 30;
-        var data = [20,10,10,10,10];
+        var cx = 300, cy = 300, radius = 250, meshMinimumSize = 30;
+        var data = [20,10,10,10,40, 20, 30];
+        var labels = ["one", "two", "three", "four", "five", "six", "seven"];
         var angle = 360/data.length;
         var startAngle = 270;
-        var r = Raphael('paper', 400, 400);
+        var r = Raphael('paper', 600, 600);
         for(i in data){
           var attr = {
             fill: 'none',
@@ -57,6 +72,10 @@
         }
         for(i in meshes){
           r.path(meshes[i]).attr({fill: 'none', stroke: 'rgba(120,120,120,0.5)'})
+        }
+        for(i in labels){
+          var textObject = label(cx, cy, radius, startAngle + angle * i);
+          r.text(textObject.x, textObject.y, labels[i]).attr(textObject.attr);
         }
           
       }
