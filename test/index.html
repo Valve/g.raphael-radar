@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <title>g.raphael-radar test</title>
+    <script src="js/raphael-min.js"></script>
+    <script src="js/g.raphael.js"></script>
+    <script src="../g.radar.js"></script>
+  </head>
+  <body>
+    <div id="paper"></div>
+    <script type="text/javascript">
+      function arm(cx, cy, r, angle){
+        var rad = Raphael.rad(angle);
+        var x = r + (r * Math.cos(rad));
+        var y = r + (r * Math.sin(rad));
+
+        return ["M", cx, cy, "L", x, y, "Z"].join(",");
+      }
+
+      function meshLine(cx, cy, r, startAngle, angle){ 
+        var mesh = ["M"];
+        var circle = startAngle + 360;
+        while(startAngle < circle){
+          var x = cx + r * Math.cos(Raphael.rad(startAngle));
+          var y = cy + r * Math.sin(Raphael.rad(startAngle));
+          mesh.push(x);
+          mesh.push(y);
+          mesh.push("L");
+          startAngle += angle;
+        }
+        mesh.push("Z");
+        return mesh.join(",");       
+      }
+
+      window.onload = function(){
+        var cx = 200, cy = 200, radius = 200, meshMinimumSize = 30;
+        var data = [20,10,10,10,10];
+        var angle = 360/data.length;
+        var startAngle = 270;
+        var r = Raphael('paper', 400, 400);
+        for(i in data){
+          var attr = {
+            fill: 'none',
+            stroke: 'rgba(255,106,0,0.5)',
+            "stroke-width": 1
+          };
+          var path = r.path(arm(cx, cy, radius, startAngle + angle * i)).attr(attr);        
+        }
+        var meshCount = Math.floor(radius/meshMinimumSize);
+        var meshHeight = radius / meshCount;
+        var meshRadius = meshHeight;
+        var meshes = [];
+        while(meshCount > 0){
+          meshes.push(meshLine(cx, cy, meshRadius, startAngle, angle));
+          meshRadius+=meshHeight;
+          --meshCount;
+        }
+        for(i in meshes){
+          r.path(meshes[i]).attr({fill: 'none', stroke: 'rgba(120,120,120,0.5)'})
+        }
+          
+      }
+    </script>
+  </body>
+</html>

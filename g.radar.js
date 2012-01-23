@@ -6,5 +6,6 @@
  */
  (function(paper, cx, cy, r, values, opts){
  	opts = opts || {};
- 	var chart = paper.set(); 	
+
+  	
  })();
