@@ -19,9 +19,10 @@ This chart can be customized by passing the options that will override the defau
 
 ``` 
 paper.radar(400, 400, 300, [4, 8, 15, 16, 23, 42],
-  {
+  {    
+    meshSize: 30,//the space between adjacent meshes,
     labels: ["USA", "Canada", "Sweden", "Ukraine", "Uzbekistan", "Russia"],
-    meshSize: 30,//the space between adjacent meshes
+    labelFontSize: 20, //huge font
     drawLabels: true, //to draw labels or not
     armFill: 'none', //color of arm fill
     armStroke: 'rgba(255, 106, 0, .5)', //color of arm stroke

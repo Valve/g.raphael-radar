@@ -14,6 +14,7 @@
     var defaultOpts = {
       meshSize: 30,
       labels: [],
+      labelFontSize: 14,
       drawLabels: true,
       armFill: 'none',
       armStroke: 'rgba(255, 106, 0, .5)',
@@ -69,26 +70,28 @@
         y: (Math.round(y) === cy) ? y : (y < cy ? y - 10 : y + 10),
         attr:{
           "text-anchor": (Math.round(x) === cx) ? "middle"  : (x < cx ?  "end" : "start"),
-          "font-size": r/20
+          "font-size": opts.labelFontSize
         }
       };
     }
 
-    var path = function(cx, cy, r, angle1, angle2, value1, value2, max){
-      var rad1 = Raphael.rad(angle1);
-      var rad2 = Raphael.rad(angle2);
-      var p1 = {
-        x: cx + r/max*value1 * Math.cos(rad1), 
-        y: cy + r/max*value1 * Math.sin(rad1)
-      };
-      var p2 = {
-        x: cx + r/max*value2 * Math.cos(rad2), 
-        y: cy + r/max*value2 * Math.sin(rad2)
-      };
-      paper.path(["M", p1.x, p1.y, "L", p2.x, p2.y, "Z"].join(",")).attr({
+    var path = function(cx, cy, r, startAngle, values, max){      
+      var pathData = [];
+      for(v in values){
+        var rad = Raphael.rad(startAngle + 360/values.length*v);
+        pathData.push(v == 0 ? "M" : "L");
+        pathData.push(cx + r/max*values[v] * Math.cos(rad));
+        pathData.push(cy + r/max*values[v] * Math.sin(rad));       
+      }
+      pathData.push("L");
+      pathData.push(cx + r/max*values[0] * Math.cos(rad));
+      pathData.push(cy + r/max*values[0] * Math.sin(rad)); 
+      pathData.push("Z");
+      paper.path(pathData.join(",")).attr({
         "stroke": opts.pathStroke,
         "fill": opts.pathFill,
-        "stroke-width": opts.pathStrokeWidth
+        "stroke-width": opts.pathStrokeWidth,
+        "stroke-linejoin": 'round'
       });     
     }
 
@@ -140,11 +143,8 @@
       }
     }
     
-    //path
-    for(var i = 0; i < values.length-1; i++){
-      path(cx, cy, r, startAngle + angle * i, startAngle + angle * (i + 1), values[i], values[i+1], opts.max);
-    } 
-    path(cx, cy, r, startAngle - angle, startAngle, values[values.length-1], values[0], opts.max);
+    
+    path(cx, cy, r, startAngle, values, opts.max);
     
     //circles on path
     if(opts.drawPathCircles){
