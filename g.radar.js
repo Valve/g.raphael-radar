@@ -1,11 +1,12 @@
 /*
- * g.raphael-radar 0.1 - Radar chart, based on Raphaël.js
+ * g.$r-radar 0.1 - Radar chart, based on Raphaël.js
  *
  * Copyright (c) 2012 Valentin Vasilyev (iamvalentin@gmail.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  */
  (function(){ 
    function Radar(paper, cx, cy, r, values, opts){
+    var $r = Raphael;//for minification;
     if(!values || values.length == 0) throw 'Values array is required';
    	opts = opts || {};
     var 
@@ -40,7 +41,7 @@
     delete defaultOpts;
 
     var arm = function(cx, cy, r, angle){
-      var rad = Raphael.rad(angle);
+      var rad = $r.rad(angle);
       var x = cx + (r * Math.cos(rad));
       var y = cy + (r * Math.sin(rad));
       return ["M", cx, cy, "L", x, y, "Z"].join(",");
@@ -50,8 +51,8 @@
       var mesh = ["M"];
       var circle = startAngle + 360;
       while(startAngle < circle){
-        var x = cx + r * Math.cos(Raphael.rad(startAngle));
-        var y = cy + r * Math.sin(Raphael.rad(startAngle));
+        var x = cx + r * Math.cos($r.rad(startAngle));
+        var y = cy + r * Math.sin($r.rad(startAngle));
         mesh.push(x);
         mesh.push(y);
         mesh.push("L");
@@ -62,7 +63,7 @@
     }
 
     var label = function(cx, cy, r, angle){
-      var rad = Raphael.rad(angle);
+      var rad = $r.rad(angle);
       var x = cx + r * Math.cos(rad);
       var y = cy + r * Math.sin(rad);
       return {
@@ -77,11 +78,13 @@
 
     var path = function(cx, cy, r, startAngle, values, max){      
       var pathData = [];
-      for(v in values){
-        var rad = Raphael.rad(startAngle + 360/values.length*v);
-        pathData.push(v == 0 ? "M" : "L");
-        pathData.push(cx + r/max*values[v] * Math.cos(rad));
-        pathData.push(cy + r/max*values[v] * Math.sin(rad));       
+      var i = 0, l = values.length;
+      while(i<l){
+        var rad = $r.rad(startAngle + 360/values.length * i);
+        pathData.push(i == 0 ? "M" : "L");
+        pathData.push(cx + r/max*values[i] * Math.cos(rad));
+        pathData.push(cy + r/max*values[i] * Math.sin(rad));     
+        ++i;  
       }
       pathData.push("L");
       pathData.push(cx + r/max*values[0] * Math.cos(rad));
@@ -96,7 +99,7 @@
     }
 
     var circle = function(cx, cy, r, angle, value, max, title){
-      var rad = Raphael.rad(angle);      
+      var rad = $r.rad(angle);      
       var p = {
         x: cx + r/max*value * Math.cos(rad), 
         y: cy + r/max*value * Math.sin(rad)
@@ -108,12 +111,14 @@
   
     //arms
     if(opts.drawArms){
-      for(i in values){    
+      var i = 0, l = values.length;
+      while(i < l){
         paper.path(arm(cx, cy, r, startAngle + angle * i)).attr({
           fill: opts.armFill,
           stroke: opts.armStroke,
           "stroke-width": opts.armStrokeWidth
-        });        
+        }); 
+        ++i;       
       }
     }
     //mesh
@@ -122,22 +127,24 @@
       var meshHeight = r / meshCount;
       var meshRadius = meshHeight;
       var meshes = [];
-      while(meshCount > 0){
+      while(meshCount--){
         meshes.push(meshLine(cx, cy, meshRadius, startAngle, angle));
-        meshRadius+=meshHeight;
-        --meshCount;
+        meshRadius+=meshHeight;       
       }
-      for(i in meshes){
+      var i = 0, l = meshes.length;
+      while(i < l){
         paper.path(meshes[i]).attr({
           fill: opts.meshFill,
           stroke: opts.meshStroke,
           "stroke-width": opts.meshStrokeWidth 
         });
+        ++i;
       }
     }
     //labels
     if(opts.drawLabels){
-      for(i in opts.labels){
+      var i = opts.labels.length;
+      while(i--){
         var textObject = label(cx, cy, r, startAngle + angle * i);
         paper.text(textObject.x, textObject.y, opts.labels[i]).attr(textObject.attr);
       }
@@ -148,7 +155,8 @@
     
     //circles on path
     if(opts.drawPathCircles){
-      for(var i in values){
+      var i = values.length;
+      while(i--){
         circle(cx, cy, r, startAngle + angle *i, values[i], opts.max, opts.labels[i]);
       }
     }    
@@ -156,7 +164,7 @@
   //inheritance
   var F = function() {};
   F.prototype = Raphael.g;
-  Radar.prototype = new F;
+  Radar.prototype = new F();
 
   //public
   Raphael.fn.radar = function(cx, cy, r, values, opts) {

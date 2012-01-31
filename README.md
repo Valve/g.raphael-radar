@@ -4,6 +4,8 @@
 
 Works where Raphael.js works (Firefox 3.0+, Safari 3.0+, Chrome 5.0+, Opera 9.5+ and Internet Explorer 6.0+).
 
+Only 2.35 KB (1.02KB gzipped) -very lightweight!
+
 ## Basic usage
 
 ``` 
