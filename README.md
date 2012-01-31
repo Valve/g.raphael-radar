@@ -1,6 +1,6 @@
 # Raphaël radar chart
 
-## Radar chart implemented with [Raphael.js][raphael], version 0.1
+## Radar chart implemented with [Raphael.js][raphael]
 
 Works where Raphael.js works (Firefox 3.0+, Safari 3.0+, Chrome 5.0+, Opera 9.5+ and Internet Explorer 6.0+).
 
