@@ -1,5 +1,5 @@
 /*
- * g.$r-radar 0.1 - Radar chart, based on Raphaël.js
+ * g.raphael-radar 0.2 - Radar chart, based on Raphaël.js
  *
  * Copyright (c) 2012 Valentin Vasilyev (iamvalentin@gmail.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
