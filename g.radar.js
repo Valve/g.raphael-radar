@@ -1,6 +1,6 @@
 /*
  * g.raphael-radar 0.2 - Radar chart, based on Raphaël.js
- *
+ * https://github.com/Valve/g.raphael-radar
  * Copyright (c) 2012 Valentin Vasilyev (iamvalentin@gmail.com)
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
  */
