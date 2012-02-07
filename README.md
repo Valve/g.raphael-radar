@@ -17,6 +17,8 @@ Works where Raphael.js works (Firefox 3.0+, Safari 3.0+, Chrome 5.0+, Opera 9.5+
 
 Only 2.35 KB (1.02KB gzipped) -very lightweight!
 
+## [Example](http://valve.github.com/g.raphael-radar/example)
+
 ## Basic usage
 
 ``` 
