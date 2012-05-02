@@ -9,11 +9,17 @@
     <div id="paper"></div>
     <script type="text/javascript">
       var r = Raphael('paper', 800, 800);
-      r.radar(400, 400, 300, [40,50,20,40,30,42,11,70],{
+      r.radar(500, 350, 300, [40,50,20,40,30,42,11,70],{
         labels: ["USA", "Canada", "Sweden", "Ukraine", "Uzbekistan", "Russia", "Belarus","Germany"],
         drawPathCircles: true,
-        pathFill: 'rgba(0,20,220,0.5)'
-      });
-    </script>
+        drawValues: true,
+        drawLabels: true,
+        max:100,
+        labelFontSize: 14,
+        valueFontSize: 18,
+        pathFill: 'none',
+        pathStrokeWidth: 3
+    });    
+    </script> 
   </body>
 </html>
