@@ -1,5 +1,5 @@
 /*
-* g.raphael-radar 0.2 - Radar chart, based on Raphaël.js
+* g.raphael-radar 0.3 - Radar chart, based on Raphaël.js
 * https://github.com/Valve/g.raphael-radar
 * Copyright (c) 2012 Valentin Vasilyev (iamvalentin@gmail.com)
 * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
@@ -9,8 +9,7 @@
         var $r = Raphael; //for minification;
         if (!values || values.length == 0) throw 'Values array is required';
         opts = opts || {};
-        var 
-      startAngle = 270,
+        var startAngle = 270,
       angle = 360 / values.length;
         var defaultOpts = {
             meshSize: 30,
@@ -161,15 +160,10 @@
         // values
         if (opts.drawValues) {
             var i = values.length;
-            while (i--) {
-                //i--;
+            while (i--) {                
                 var textObject = labelvalue(cx, cy, r, startAngle + angle * i, values[i], opts.max);
-                //paper.text(textObject.x, textObject.y, opts.labels[i] + " (" + values[i] + ")").attr(textObject.attr);
-
-                var fulltext = values[i]; // +" (" + values[i] + ")";
-                var text = paper.text(textObject.x, textObject.y, fulltext).attr(textObject.attr);
-                //var fontSize = opts.labelFontSize;
-                //text.attr("font-size", fontSize);
+                var fulltext = values[i];
+                var text = paper.text(textObject.x, textObject.y, fulltext).attr(textObject.attr);           
 
             }
         }
@@ -178,9 +172,8 @@
             var i = opts.labels.length;
             while (i--) {
                 var textObject = label(cx, cy, r, startAngle + angle * i);
-                //paper.text(textObject.x, textObject.y, opts.labels[i] + " (" + values[i] + ")").attr(textObject.attr);
 
-                var fulltext = opts.labels[i]; // +" (" + values[i] + ")";
+                var fulltext = opts.labels[i]; 
                 var text = paper.text(textObject.x, textObject.y, fulltext).attr(textObject.attr);
                 fulltext = fulltext.replace("-", "- ").replace("/", "/ ");
 
@@ -190,9 +183,9 @@
                 var maxwidth = Math.min(textObject.x, paper.width - textObject.x);
                 var maxheight = Math.min(textObject.y, paper.height - textObject.y);
 
-                var fontSize = opts.labelFontSize;
-                var FontSizeMin = 8;
-                for (fontSize; fontSize >= FontSizeMin; --fontSize) {
+                
+                var fontSizeMin = 8;
+                for (var fontSize = opts.labelFontSize; fontSize >= fontSizeMin; --fontSize) {
                     text.attr("font-size", fontSize);
                     var tempText = "";
                     for (var i1 = 0; i1 < wordsCount; ++i1) {
@@ -208,7 +201,7 @@
                         tempText = tempText.replace("-", "-\n");
                         text.attr("text", tempText);
                     }
-                    if (fontSize == FontSizeMin ||
+                    if (fontSize == fontSizeMin ||
                      (text.getBBox().height <= maxheight &&
                      (text.getBBox().width <= maxwidth || wordsCount > 1))) {
                         var titleCountLines = tempText.split("\n").length;
