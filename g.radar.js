@@ -32,7 +32,8 @@
             pathStrokeWidth: 3,
             pathCircleOuterRadius: 4,
             pathCircleInnerRadius: 2,
-            drawPathCircles: true
+            drawPathCircles: true,
+            closePath: true
         };
         //replacing default opts with explicitly provided
         for (var prop in opts) {
@@ -105,7 +106,11 @@
                 pathData.push(cy + r / max * values[i] * Math.sin(rad));
                 ++i;
             }
-            pathData.push("Z");
+            
+            if (opts.closePath) {
+                pathData.push("Z");
+            }
+
             paper.path(pathData.join(",")).attr({
                 "stroke": opts.pathStroke,
                 "fill": opts.pathFill,
