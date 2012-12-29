@@ -57,6 +57,21 @@ paper.radar(400, 400, 300, [4, 8, 15, 16, 23, 42],
   });
 ```
 
+### Installation
+
+If you're on Rails, add this line to your gem file:
+
+`
+gem 'g.raphael-radar-rails'
+`
+Then, add a dependency to a sprocket file: 
+
+`
+//= require 'g.radar'
+`
+
+If you're not using rails, just copy the JavaScript to your scripts directory.
+
 ### Licence
 
 This code is [MIT][mit] licenced:
